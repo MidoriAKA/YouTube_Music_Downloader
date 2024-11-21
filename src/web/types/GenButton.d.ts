@@ -1,4 +1,4 @@
-export interface IGenButtonProps {
+interface IGenButtonProps {
   text: string;
   isSubmit?: boolean;
   onClick?: () => void;

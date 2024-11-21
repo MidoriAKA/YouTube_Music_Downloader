@@ -1,17 +1,12 @@
-import { useState } from "react";
-import { GenButton } from "@generic/GenButton";
+import * as style from "@styles/App";
+import { Download } from "./components/mainView";
 
 export const App = () => {
-
   return (
-    <div className="container">
-      <h1>Download Music</h1>
-      <GenButton
-        text="Download"
-        onClick={() => {
-          console.log("Download button clicked.");
-        }}
-      />
+    <div
+      css={style.container}
+    >
+      <Download />
     </div>
   );
 };

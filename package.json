@@ -1,9 +1,9 @@
 {
-  "name": "electron-react-ts",
-  "version": "0.0.0",
-  "description": "Electron App",
+  "name": "youtube-music-downloader",
+  "version": "0.0.1",
+  "description": "Youtube Music Downloader redesigned with Electron, React and TypeScript",
   "license": "",
-  "author": "",
+  "author": "Midori",
   "main": "dist/main.js",
   "scripts": {
     "dev": "rimraf dist && run-p dev:webpack dev:electron",

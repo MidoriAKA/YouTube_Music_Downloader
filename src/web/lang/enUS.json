@@ -1,0 +1,33 @@
+{
+  "main": {
+    "title": {
+      "download": "Download Music",
+      "cover": "Add Cover to Music Files"
+    },
+    "form": {
+      "download": {
+        "label": {
+          "urlInput": "Youtube URL",
+          "saveDir": "Save Directory"
+        },
+        "button": {
+          "paste": "Paste URL",
+          "selectDir": "Select Directory",
+          "download": "Download"
+        },
+        "input": {
+          "urlInputPlaceholder": "https://youtu.be, https://music.youtube.com"
+        }
+      },
+      "cover": {
+        "label": {
+          "selectDir": "Scan Directory"
+        },
+        "button": {
+          "selectDir": "Select Directory",
+          "addCover": "Add Cover"
+        }
+      }
+    }
+  }
+}
