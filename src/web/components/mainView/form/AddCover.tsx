@@ -1,10 +1,10 @@
-import text from "@web/lang/enUS.json"
+import text from "@web/lang/enUS.json";
 import * as style from "@styles/App";
 import * as formStyle from "@styles/genericComponents/genForm";
 import { GenForm } from "@generic/GenForm";
 import { GenButton } from "@generic/GenButton";
 
-export const Download = () => {
+export const AddCover = () => {
   const { main } = text;
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -14,28 +14,16 @@ export const Download = () => {
     <>
       <h1
         css={style.h1}
-      >{main.title.download}</h1>
+      >{main.title.cover}</h1>
       <GenForm
-        buttonText={main.form.download.button.download}
+        buttonText={main.form.cover.button.addCover}
         onSubmit={handleSubmit}
       >
         <label
           css={formStyle.label}
-        >{main.form.download.label.urlInput}</label>
+        >{main.form.cover.label.selectDir}</label>
         <GenButton
-          text={main.form.download.button.paste}
-          isSubmit={false}
-        />
-        <input
-          css={formStyle.input}
-          type="text"
-          placeholder={main.form.download.input.urlInputPlaceholder}
-        />
-        <label
-          css={formStyle.label}
-        >{main.form.download.label.saveDir}</label>
-        <GenButton
-          text={main.form.download.button.selectDir}
+          text={main.form.cover.button.selectDir}
           isSubmit={false}
         />
         <input
@@ -46,4 +34,4 @@ export const Download = () => {
       </GenForm>
     </>
   );
-};
+}

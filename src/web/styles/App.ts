@@ -5,8 +5,9 @@ export const container: SerializedStyles = css({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  height: "95vh",
   backgroundColor: theme.Colors.light,
+  margin: "0",
+  padding: "0",
 });
 
 export const h1: SerializedStyles = css({

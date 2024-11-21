@@ -1,5 +1,5 @@
 import * as style from "@styles/App";
-import { Download } from "./components/mainView";
+import { AddCover, Download } from "./components/mainView";
 
 export const App = () => {
   return (
@@ -7,6 +7,7 @@ export const App = () => {
       css={style.container}
     >
       <Download />
+      <AddCover />
     </div>
   );
 };

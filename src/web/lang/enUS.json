@@ -7,7 +7,7 @@
     "form": {
       "download": {
         "label": {
-          "urlInput": "Youtube URL",
+          "urlInput": "Download music from the entered URL.",
           "saveDir": "Save Directory"
         },
         "button": {
@@ -21,7 +21,7 @@
       },
       "cover": {
         "label": {
-          "selectDir": "Scan Directory"
+          "selectDir": "Works on all music under the selected directory."
         },
         "button": {
           "selectDir": "Select Directory",
