@@ -1,10 +1,11 @@
-import path from "node:path";
+import path, { dirname } from "node:path";
 import { BrowserWindow, app, clipboard, dialog, ipcMain } from "electron";
 import { exec, spawn } from "child_process";
 import fs from "fs";
 import fetch from "node-fetch";
 import albumArt from "album-art";
 import NodeID3 from "node-id3";
+import { ISubmitDownload, TSelectDirectory } from "./types/window.global";
 
 app.whenReady().then(() => {
   const mainWindow = new BrowserWindow({
@@ -24,7 +25,7 @@ ipcMain.handle("paste-from-clipboard", async () => {
 ipcMain.handle("submit-download", async (event, values: ISubmitDownload) => {
   const ytDlpPath = path.join(__dirname, "bin", "yt-dlp.exe");
   const isPlaylist = values.url.includes("playlist") ? "--yes-playlist" : "";
-  const output = path.join(values.outputPath, "%(artist)s - %(title)s.%(ext)s");
+  const output = path.join(values.saveDir, "%(artist)s - %(title)s.%(ext)s");
   const downloadPrompts = [
     `"${ytDlpPath}"`,
     "--verbose",
@@ -32,7 +33,7 @@ ipcMain.handle("submit-download", async (event, values: ISubmitDownload) => {
     `--output "${output}"`,
     "--windows-filenames",
     "--abort-on-unavailable-fragment",
-    "--buffer-size 16M",
+    "--buffer-size 1M",
     "--extract-audio",
     "--audio-format mp3",
     "--audio-quality 320K",
@@ -40,20 +41,21 @@ ipcMain.handle("submit-download", async (event, values: ISubmitDownload) => {
     `"${values.url}"`,
   ].join(" ");
 
+  console.log(downloadPrompts);
+
   return new Promise((resolve, reject) => {
-    const process = spawn(downloadPrompts, {
+    const cmdProcess = spawn(downloadPrompts, {
       shell: true,
-      cwd: __dirname,
     });
-    process.stdout.on("data", (data) => {
+    cmdProcess.stdout.on("data", (data) => {
       event.sender.send("receive-log", data.toString());
       console.log("\x1b[36m%s\x1b[0m", data.toString());
     });
-    process.stderr.on("data", (data) => {
+    cmdProcess.stderr.on("data", (data) => {
       event.sender.send("receive-log", data.toString());
-      console.log("\x1b[31m%s\x1b[0m", data.toString());
+      console.log("\x1b[32m%s\x1b[0m", data.toString());
     });
-    process.on("close", (code) => {
+    cmdProcess.on("close", (code) => {
       if (code === 0) {
         resolve("Download completed successfully.");
       } else {
@@ -124,13 +126,15 @@ ipcMain.handle("select-directory", async () => {
     properties: ["openDirectory"],
   });
   if (result.canceled) {
-    return null;
+    return;
   }
 
   const directlyPath = result.filePaths[0];
-  const mp3Files = fs.readdirSync(directlyPath).filter((file) => file.endsWith(".mp3"));
+  const mp3Files = fs.readdirSync(directlyPath).filter((file) => file.endsWith(".mp3"))
+  ? fs.readdirSync(directlyPath).filter((file) => file.endsWith(".mp3"))
+  : [];
 
-  const returnValues = [
+  const returnValues: TSelectDirectory = [
     directlyPath,
     mp3Files,
   ]
