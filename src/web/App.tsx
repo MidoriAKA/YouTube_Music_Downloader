@@ -1,16 +1,30 @@
 import * as style from "@styles/App";
 import { AddCover, Download } from "./components/mainView";
+import { SideMenu } from "./components/mainView/sideMenu/sideMenu";
+import { useSideMenuContext } from "./context/sideMenu/sideMenuContext";
+import { GenToolTip } from "./components/genericComponents/GenToolTip";
 
 export const App = () => {
-  window.electron.onReceiveLog((log) => {
-    console.log(log);
-  });
+  const {
+    currentActive,
+  } = useSideMenuContext();
   return (
-    <div
-      css={style.container}
-    >
-      <Download />
-      <AddCover />
-    </div>
+    <>
+      <SideMenu />
+      <div
+        css={style.container}
+      >
+        {
+          currentActive === "download" && (
+            <Download />
+          )
+        }
+        {
+          currentActive === "addCover" && (
+            <AddCover />
+          )
+        }
+      </div>
+    </>
   );
 };

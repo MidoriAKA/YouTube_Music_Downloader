@@ -17,6 +17,7 @@
       "@generic/*": ["src/web/components/genericComponents/*"],
     }
   },
+  "include": ["src/**/*", "src/types/**/*"],
   "ts-node": {
     "compilerOptions": {
       "module": "CommonJS"

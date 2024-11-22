@@ -12,4 +12,14 @@ export const Colors = {
   dark: "#333",
   white: "#fff",
   black: "#000",
+  rgb: {
+    secondry: "0, 140, 186",
+    danger: "244, 67, 54",
+    warning: "255, 152, 0",
+    info: "33, 150, 243",
+    light: "241, 241, 241",
+    dark: "51, 51, 51",
+    white: "255, 255, 255",
+    black: "0, 0, 0",
+  }
 };

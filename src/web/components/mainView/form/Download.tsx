@@ -10,6 +10,7 @@ export const Download = () => {
   const { main } = text;
   const [url, setUrl] = useState<string>("");
   const [saveDir, setSaveDir] = useState<string>("");
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -29,7 +30,7 @@ export const Download = () => {
       setUrl(data);
     });
   }
-  
+
   const handleSelectDir = async () => {
     await window.electron.selectDirectory().then((data: TSelectDirectory) => {
       console.log(data);

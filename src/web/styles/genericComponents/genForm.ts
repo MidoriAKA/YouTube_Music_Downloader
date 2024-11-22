@@ -14,7 +14,7 @@ export const genForm: SerializedStyles = css({
 export const input: SerializedStyles = css({
   padding: "10px",
   width: "100%",
-  border: `solid rgba(${theme.Colors.dark}, 0.2)`,
+  border: `solid rgba(${theme.Colors.rgb.dark}, 0.2)`,
   borderWidth: "0 0 2px 0",
   "&:focus": {
     outline: "none",
@@ -24,5 +24,5 @@ export const input: SerializedStyles = css({
 
 export const label: SerializedStyles = css({
   color: theme.Colors.dark,
-  fontSize: "1.3rem",
+  fontSize: "1.2rem",
 });

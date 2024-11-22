@@ -4,7 +4,11 @@ import * as theme from "@styles/root";
 export const container: SerializedStyles = css({
   display: "flex",
   flexDirection: "column",
+  justifyContent: "center",
   alignItems: "center",
+  height: "100vh",
+  width: "calc(100vw)",
+  overflow: "hidden",
   backgroundColor: theme.Colors.light,
   margin: "0",
   padding: "0",
