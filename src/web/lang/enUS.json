@@ -29,5 +29,11 @@
         }
       }
     }
+  },
+  "side": {
+    "toolTip": {
+      "download": "Download Music",
+      "addCover": "Add Cover to Music Files"
+    }
   }
 }

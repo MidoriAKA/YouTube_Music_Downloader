@@ -24,3 +24,17 @@ export const container: SerializedStyles = css({
     margin: "10px 0",
   },
 })
+
+export const icon: SerializedStyles = css({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  width: "32px",
+  height: "32px",
+  cursor: "pointer",
+  border: `solid rgba(${theme.Colors.primary.base}, 0.5)`,
+  borderRadius: "10px",
+  "&:hover": {
+    borderColor: `rgba(${theme.Colors.primary.dark}, 1)`,
+  },
+})

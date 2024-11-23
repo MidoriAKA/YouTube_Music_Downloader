@@ -1,0 +1,39 @@
+{
+  "main": {
+    "title": {
+      "download": "ダウンロード",
+      "cover": "音楽ファイルにアートワークを追加"
+    },
+    "form": {
+      "download": {
+        "label": {
+          "urlInput": "入力されたURLから音楽をダウンロードします。.",
+          "saveDir": "保存先"
+        },
+        "button": {
+          "paste": "URLを貼り付ける",
+          "selectDir": "ディレクトリを選択",
+          "download": "ダウンロード"
+        },
+        "input": {
+          "urlInputPlaceholder": "https://youtu.be, https://music.youtube.com"
+        }
+      },
+      "cover": {
+        "label": {
+          "selectDir": "選択したディレクトリ内のすべての音楽ファイルにアートワークを追加します。"
+        },
+        "button": {
+          "selectDir": "ディレクトリを選択",
+          "addCover": "アートワークを追加"
+        }
+      }
+    }
+  },
+  "side": {
+    "toolTip": {
+      "download": "音楽をダウンロード",
+      "addCover": "アートワークを追加"
+    }
+  }
+}

@@ -5,8 +5,12 @@ import { IconDownload } from "@/web/assets/download.svg";
 import { IconAddCover } from "@/web/assets/addCover.svg";
 import { useSideMenuContext } from "@/web/context/sideMenu/sideMenuContext";
 import { GenToolTip } from "../../genericComponents/GenToolTip";
+import { useLangContext } from "@/web/context/lang/langContext";
 
 export const SideMenu = () => {
+  const {
+    text: { side },
+  } = useLangContext();
 
   type THandleToolTip = ["Download" | "Add Cover", boolean];
   const [handleToolTip, setHandleToolTip] = useState<THandleToolTip>([
@@ -45,12 +49,10 @@ export const SideMenu = () => {
           onMouseLeave={() => setHandleToolTip([`${handleToolTip[0]}`, false])}
         >
           <div
+            css={style.icon}
             style={{
-              padding: "2px",
-              border: `solid rgba(${theme.Colors.primary.base}, 0.5)`,
-              borderRadius: "10px",
+              padding: currentActive === "download" ? "0" : "2px",
               borderWidth: currentActive === "download" ? "2px" : "0",
-              transition: "border-width 0.1s",
             }}
             onClick={() => setCurrentActive("download")}
             onMouseEnter={(event) => handleToolTipVisibility("Download", true, event)}
@@ -66,12 +68,10 @@ export const SideMenu = () => {
             />
           </div>
           <div
+            css={style.icon}
             style={{
-              padding: "2px",
-              border: `solid rgba(${theme.Colors.primary.base}, 0.5)`,
-              borderRadius: "10px",
+              padding: currentActive === "addCover" ? "0" : "2px",
               borderWidth: currentActive === "addCover" ? "2px" : "0",
-              transition: "border-width 0.1s",
             }}
             onClick={() => setCurrentActive("addCover")}
             onMouseEnter={(event) => handleToolTipVisibility("Add Cover", true, event)}
@@ -88,7 +88,11 @@ export const SideMenu = () => {
           </div>
         </div>
         <GenToolTip
-          text={handleToolTip[0]}
+          text={
+            handleToolTip[0] === "Download"
+              ? side.toolTip.download
+              : side.toolTip.addCover
+          }
           isActive={handleToolTip[1]}
           position={mousePosition}
         />

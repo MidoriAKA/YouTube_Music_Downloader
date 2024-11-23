@@ -1,13 +1,15 @@
-import text from "@web/lang/enUS.json"
 import * as style from "@styles/App";
 import * as formStyle from "@styles/genericComponents/genForm";
 import { GenForm } from "@generic/GenForm";
 import { GenButton } from "@generic/GenButton";
 import { useState } from "react";
 import { TSelectDirectory } from "@/types/window.global";
+import { useLangContext } from "@/web/context/lang/langContext";
 
 export const Download = () => {
-  const { main } = text;
+  const {
+    text: { main },
+  } = useLangContext();
   const [url, setUrl] = useState<string>("");
   const [saveDir, setSaveDir] = useState<string>("");
 

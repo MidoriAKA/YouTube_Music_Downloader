@@ -1,11 +1,13 @@
-import text from "@web/lang/enUS.json";
 import * as style from "@styles/App";
 import * as formStyle from "@styles/genericComponents/genForm";
 import { GenForm } from "@generic/GenForm";
 import { GenButton } from "@generic/GenButton";
+import { useLangContext } from "@/web/context/lang/langContext";
 
 export const AddCover = () => {
-  const { main } = text;
+  const {
+    text: { main },
+  } = useLangContext();
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Form submitted");
