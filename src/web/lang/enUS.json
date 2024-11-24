@@ -2,7 +2,8 @@
   "main": {
     "title": {
       "download": "Download Music",
-      "cover": "Add Cover to Music Files"
+      "cover": "Add Cover to Music Files",
+      "settings": "Settings"
     },
     "form": {
       "download": {
@@ -27,13 +28,30 @@
           "selectDir": "Select Directory",
           "addCover": "Add Cover"
         }
+      },
+      "settings": {
+        "label": {
+          "language": "Language",
+          "theme": "Theme"
+        },
+        "option": {
+          "language": {
+            "enUS": "English",
+            "jaJP": "日本語"
+          },
+          "theme": {
+            "light": "Light",
+            "dark": "Dark"
+          }
+        }
       }
     }
   },
   "side": {
     "toolTip": {
       "download": "Download Music",
-      "addCover": "Add Cover to Music Files"
+      "addCover": "Add Cover to Music Files",
+      "settings": "Settings"
     }
   }
 }

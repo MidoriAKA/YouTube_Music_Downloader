@@ -4,6 +4,7 @@ import { SideMenu } from "./components/mainView/sideMenu/sideMenu";
 import { useSideMenuContext } from "./context/sideMenu/sideMenuContext";
 import { GenToolTip } from "./components/genericComponents/GenToolTip";
 import { LangContextProvider } from "./context/lang/langContext";
+import { Settings } from "./components/settingsView/Settings";
 
 export const App = () => {
   const {
@@ -24,6 +25,11 @@ export const App = () => {
           {
             currentActive === "addCover" && (
               <AddCover />
+            )
+          }
+          {
+            currentActive === "settings" && (
+              <Settings />
             )
           }
         </div>

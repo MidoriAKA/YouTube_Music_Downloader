@@ -7,7 +7,7 @@ interface ISideMenuContext {
 interface ISideMenuContextProvider {
   children: React.ReactNode;
 }
-type TCurrentActive = "download" | "addCover";
+type TCurrentActive = "download" | "addCover" | "settings";
 
 const SideMenuContext = createContext({} as ISideMenuContext);
 export const useSideMenuContext = () => {

@@ -2,12 +2,13 @@
   "main": {
     "title": {
       "download": "ダウンロード",
-      "cover": "音楽ファイルにアートワークを追加"
+      "cover": "音楽ファイルにアートワークを追加",
+      "settings": "設定"
     },
     "form": {
       "download": {
         "label": {
-          "urlInput": "入力されたURLから音楽をダウンロードします。.",
+          "urlInput": "入力されたURLから音楽をダウンロードします。",
           "saveDir": "保存先"
         },
         "button": {
@@ -27,13 +28,30 @@
           "selectDir": "ディレクトリを選択",
           "addCover": "アートワークを追加"
         }
+      },
+      "settings": {
+        "label": {
+          "language": "言語",
+          "theme": "テーマ"
+        },
+        "option": {
+          "language": {
+            "enUS": "English",
+            "jaJP": "日本語"
+          },
+          "theme": {
+            "light": "ライト",
+            "dark": "ダーク"
+          }
+        }
       }
     }
   },
   "side": {
     "toolTip": {
       "download": "音楽をダウンロード",
-      "addCover": "アートワークを追加"
+      "addCover": "アートワークを追加",
+      "settings": "設定"
     }
   }
 }
