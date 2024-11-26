@@ -4,7 +4,11 @@ export const Colors = {
     dark: "56, 142, 60", // #388E3C
     light: "200, 230, 201", // #C8E6C9
   },
-  secondary: "#008CBA",
+  secondary: {
+    base: "0, 140, 186", // #008CBA
+    dark: "0, 96, 128", // #006080
+    light: "179, 224, 255", // #b3e0ff
+  },
   danger: "#f44336",
   warning: "#ff9800",
   info: "#2196F3",

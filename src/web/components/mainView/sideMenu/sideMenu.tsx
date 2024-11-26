@@ -5,6 +5,7 @@ import { IconDownload } from "@/web/assets/download.svg";
 import { IconAddCover } from "@/web/assets/addCover.svg";
 import { IconSettings } from "@/web/assets/settings.svg";
 import { useSideMenuContext } from "@/web/context/sideMenu/sideMenuContext";
+import { useDarkModeContext } from "@/web/context/darkMode";
 import { GenToolTip } from "../../genericComponents/GenToolTip";
 import { useLangContext } from "@/web/context/lang/langContext";
 
@@ -12,6 +13,9 @@ export const SideMenu = () => {
   const {
     text: { side },
   } = useLangContext();
+  const {
+    darkMode,
+  } = useDarkModeContext();
 
   type THandleToolTip = ["Download" | "Add Cover" | "Settings", boolean];
   const [handleToolTip, setHandleToolTip] = useState<THandleToolTip>([
@@ -28,82 +32,91 @@ export const SideMenu = () => {
   } = useSideMenuContext();
 
   const handleToolTipVisibility = (
-    toolTip: "Download" | "Add Cover" | "Settings", visibility: boolean,
+    toolTip: "Download" | "Add Cover" | "Settings",
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
   ) => {
     const { clientX, clientY } = event;
     setMousePosition([clientX + 10, clientY + -10]);
-    if (event.type === "mouseenter") {
-      setTimeout(() => {
-        setHandleToolTip([toolTip, visibility]);
-      }, 300);
-    } else {
-      setHandleToolTip([toolTip, visibility]);
-    }
+    setHandleToolTip([toolTip, !handleToolTip[1]]);
   };
 
   return (
     <>
       <div>
         <div
-          css={style.container}
+          css={style.container({ isDarkMode: darkMode })}
           onMouseLeave={() => setHandleToolTip([`${handleToolTip[0]}`, false])}
         >
           <div
-            css={style.icon}
+            css={style.icon({ isDarkMode: darkMode })}
             style={{
-              padding: currentActive === "download" ? "0" : "2px",
-              borderWidth: currentActive === "download" ? "2px" : "0",
+              outlineWidth: currentActive === "download" ? "2px" : "0",
             }}
             onClick={() => setCurrentActive("download")}
-            onMouseEnter={(event) => handleToolTipVisibility("Download", true, event)}
-            onMouseLeave={(event) => handleToolTipVisibility("Download", false, event)}
+            onMouseEnter={(event) => handleToolTipVisibility("Download", event)}
+            onMouseLeave={(event) => handleToolTipVisibility("Download", event)}
           >
             <IconDownload
               style={{
                 width: "30px",
                 height: "30px",
               }}
-              color={theme.Colors.primary.base}
-              hoverColor={theme.Colors.primary.dark}
+              color={
+                darkMode ? theme.Colors.secondary.base
+                  : theme.Colors.primary.base
+              }
+              hoverColor={
+                darkMode ? theme.Colors.secondary.light
+                  : theme.Colors.primary.dark
+              }
             />
           </div>
           <div
-            css={style.icon}
+            css={style.icon({ isDarkMode: darkMode })}
             style={{
-              padding: currentActive === "addCover" ? "0" : "2px",
-              borderWidth: currentActive === "addCover" ? "2px" : "0",
+              outlineWidth: currentActive === "addCover" ? "2px" : "0",
             }}
             onClick={() => setCurrentActive("addCover")}
-            onMouseEnter={(event) => handleToolTipVisibility("Add Cover", true, event)}
-            onMouseLeave={(event) => handleToolTipVisibility("Add Cover", false, event)}
+            onMouseEnter={(event) => handleToolTipVisibility("Add Cover", event)}
+            onMouseLeave={(event) => handleToolTipVisibility("Add Cover", event)}
           >
             <IconAddCover
               style={{
                 width: "30px",
                 height: "30px",
               }}
-              color={theme.Colors.primary.base}
-              hoverColor={theme.Colors.primary.dark}
+              color={
+                darkMode ? theme.Colors.secondary.base
+                  : theme.Colors.primary.base
+              }
+              hoverColor={
+                darkMode ? theme.Colors.secondary.light
+                  : theme.Colors.primary.dark
+              }
             />
           </div>
           <div
-            css={style.icon}
+            css={style.icon({ isDarkMode: darkMode })}
             style={{
-              padding: currentActive === "settings" ? "0" : "2px",
-              borderWidth: currentActive === "settings" ? "2px" : "0",
+              outlineWidth: currentActive === "settings" ? "2px" : "0",
             }}
             onClick={() => setCurrentActive("settings")}
-            onMouseEnter={(event) => handleToolTipVisibility("Settings", true, event)}
-            onMouseLeave={(event) => handleToolTipVisibility("Settings", false, event)}
+            onMouseEnter={(event) => handleToolTipVisibility("Settings", event)}
+            onMouseLeave={(event) => handleToolTipVisibility("Settings", event)}
           >
             <IconSettings
               style={{
                 width: "30px",
                 height: "30px",
               }}
-              color={theme.Colors.primary.base}
-              hoverColor={theme.Colors.primary.dark}
+              color={
+                darkMode ? theme.Colors.secondary.base
+                  : theme.Colors.primary.base
+              }
+              hoverColor={
+                darkMode ? theme.Colors.secondary.light
+                  : theme.Colors.primary.dark
+              }
             />
           </div>
         </div>

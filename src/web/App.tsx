@@ -5,17 +5,21 @@ import { useSideMenuContext } from "./context/sideMenu/sideMenuContext";
 import { GenToolTip } from "./components/genericComponents/GenToolTip";
 import { LangContextProvider } from "./context/lang/langContext";
 import { Settings } from "./components/settingsView/Settings";
+import { useDarkModeContext } from "./context/darkMode";
 
 export const App = () => {
   const {
     currentActive,
   } = useSideMenuContext();
+  const {
+    darkMode,
+  } = useDarkModeContext();
   return (
     <>
       <LangContextProvider>
         <SideMenu />
         <div
-          css={style.container}
+          css={style.container({ isDarkMode: darkMode })}
         >
           {
             currentActive === "download" && (

@@ -1,4 +1,3 @@
-import { Children } from "react";
 import { GenButton } from "./GenButton";
 import * as style from "@styles/genericComponents/genForm";
 

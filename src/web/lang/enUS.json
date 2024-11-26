@@ -3,7 +3,8 @@
     "title": {
       "download": "Download Music",
       "cover": "Add Cover to Music Files",
-      "settings": "Settings"
+      "settings": "Settings",
+      "downloadOption": "Download Option"
     },
     "form": {
       "download": {
@@ -32,16 +33,15 @@
       "settings": {
         "label": {
           "language": "Language",
-          "theme": "Theme"
+          "theme": "dark mode",
+          "audioQuality": "Audio Quality",
+          "audioFormat": "Audio Format"
         },
         "option": {
           "language": {
             "enUS": "English",
-            "jaJP": "日本語"
-          },
-          "theme": {
-            "light": "Light",
-            "dark": "Dark"
+            "jaJP": "日本語",
+            "ptBR": "Português"
           }
         }
       }

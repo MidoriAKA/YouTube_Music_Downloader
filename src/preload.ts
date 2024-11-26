@@ -1,4 +1,4 @@
-import { contextBridge, ContextBridge, ipcRenderer } from "electron";
+import { contextBridge, ipcRenderer } from "electron";
 import { ISubmitDownload } from "./types/window.global";
 
 contextBridge.exposeInMainWorld("electron", {
@@ -15,4 +15,10 @@ contextBridge.exposeInMainWorld("electron", {
 
   onReceiveLog: (callback: (log: string) => void) => 
     ipcRenderer.on("receive-log", (event, log) => callback(log)),
+
+  onLoadConfig: (callback: (configValues: any) => void) =>
+    ipcRenderer.on("load-config", (event, configValues) => callback(configValues),
+  ),
+  setConfig: (configValues: any) =>
+    ipcRenderer.send("set-config", configValues),
 });

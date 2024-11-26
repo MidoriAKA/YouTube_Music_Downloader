@@ -1,4 +1,5 @@
 import * as style from "@styles/genericComponents/genToolTip";
+import { useDarkModeContext } from "@/web/context/darkMode";
 
 interface IGenToolTipProps {
   text: string;
@@ -13,6 +14,9 @@ export const GenToolTip = (props: IGenToolTipProps) => {
     children,
     position,
   } = props;
+  const {
+    darkMode,
+  } = useDarkModeContext();
   const { isActive } = props;
   return (
     <div
@@ -20,12 +24,13 @@ export const GenToolTip = (props: IGenToolTipProps) => {
         top: position[1],
         left: position[0],
         opacity: isActive ? 1 : 0,
+        visibility: isActive ? "visible" : "hidden",
       }}
-      css={style.genToolTip}
+      css={style.genToolTip({ isDarkMode: darkMode })}
     >
       {children}
       <span
-        css={style.text}
+        css={style.text({ isDarkMode: darkMode })}
       >
         {text}
       </span>

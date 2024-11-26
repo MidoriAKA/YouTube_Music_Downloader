@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from "react";
 import enUsJson from "@web/lang/enUS.json";
 import jaJPJson from "@web/lang/jaJP.json";
+import ptBRJson from "@web/lang/ptBR.json";
 
 interface ILangContext {
   lang: string;
@@ -23,11 +24,13 @@ export const LangContextProvider: React.FC<ILangContextProvider> = ({ children }
   const langJson = {
     enUS: enUsJson,
     jaJP: jaJPJson,
+    ptBR: ptBRJson,
   }
 
   const text = lang === "enUS" ? langJson.enUS
     : lang === "jaJP" ? langJson.jaJP
-      : langJson.enUS; // fallback to enUS
+      : lang === "ptBR" ? langJson.ptBR
+        : langJson.enUS; // fallback to enUS
   return (
     <LangContext.Provider
       value={{

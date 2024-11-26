@@ -1,0 +1,57 @@
+{
+  "main": {
+    "title": {
+      "download": "Baixar Música",
+      "cover": "Adicionar Capa em Música",
+      "settings": "Configurações",
+      "downloadOption": "Opção de Download"
+    },
+    "form": {
+      "download": {
+        "label": {
+          "urlInput": "Baixe música a partir do URL inserido.",
+          "saveDir": "Localização de Salvamento"
+        },
+        "button": {
+          "paste": "Colar URL",
+          "selectDir": "Selecionar Localização",
+          "download": "Baixar"
+        },
+        "input": {
+          "urlInputPlaceholder": "https://youtu.be, https://music.youtube.com"
+        }
+      },
+      "cover": {
+        "label": {
+          "selectDir": "Adicionar capas em todas as músicas sob a localização selecionada."
+        },
+        "button": {
+          "selectDir": "Selecionar Localização",
+          "addCover": "Adiconar"
+        }
+      },
+      "settings": {
+        "label": {
+          "language": "Idioma",
+          "theme": "Modo Escuro",
+          "audioQuality": "Qualidade de Áudio",
+          "audioFormat": "Formato de Áudio"
+        },
+        "option": {
+          "language": {
+            "enUS": "English",
+            "jaJP": "日本語",
+            "ptBR": "Português"
+          }
+        }
+      }
+    }
+  },
+  "side": {
+    "toolTip": {
+      "download": "Baixar Música",
+      "addCover": "Adicionar Capa",
+      "settings": "Configurações"
+    }
+  }
+}

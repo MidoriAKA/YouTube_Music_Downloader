@@ -1,6 +1,10 @@
 import { css, SerializedStyles } from "@emotion/react";
 import * as theme from "@styles/root";
 
+interface IGenFormProps {
+  isDarkMode?: boolean;
+}
+
 export const genForm: SerializedStyles = css({
   display: "flex",
   flexDirection: "column",
@@ -11,18 +15,20 @@ export const genForm: SerializedStyles = css({
   },
 });
 
-export const input: SerializedStyles = css({
+export const input = (props: IGenFormProps): SerializedStyles => css({
   padding: "10px",
   width: "100%",
-  border: `solid rgba(${theme.Colors.rgb.dark}, 0.2)`,
+  border: props.isDarkMode ? `solid rgba(${theme.Colors.secondary.base}, 0.2)` : `solid rgba(${theme.Colors.primary.base}, 0.2)`,
+  backgroundColor: props.isDarkMode ? theme.Colors.dark : theme.Colors.light,
+  color: props.isDarkMode ? theme.Colors.light : theme.Colors.dark,
   borderWidth: "0 0 2px 0",
   "&:focus": {
     outline: "none",
-    borderColor: `rgba(${theme.Colors.primary.base}, 1)`,
+    borderColor: props.isDarkMode ? `rgba(${theme.Colors.secondary.base}, 1)` : `rgba(${theme.Colors.primary.base}, 1)`,
   },
 });
 
-export const label: SerializedStyles = css({
-  color: theme.Colors.dark,
+export const label = (props: IGenFormProps): SerializedStyles => css({
+  color: props.isDarkMode ? theme.Colors.light : theme.Colors.dark,
   fontSize: "1.2rem",
 });

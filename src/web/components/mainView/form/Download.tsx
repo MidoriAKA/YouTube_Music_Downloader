@@ -5,11 +5,15 @@ import { GenButton } from "@generic/GenButton";
 import { useState } from "react";
 import { TSelectDirectory } from "@/types/window.global";
 import { useLangContext } from "@/web/context/lang/langContext";
+import { useDarkModeContext } from "@/web/context/darkMode";
 
 export const Download = () => {
   const {
     text: { main },
   } = useLangContext();
+  const {
+    darkMode
+  } = useDarkModeContext();
   const [url, setUrl] = useState<string>("");
   const [saveDir, setSaveDir] = useState<string>("");
 
@@ -42,14 +46,14 @@ export const Download = () => {
   return (
     <>
       <h1
-        css={style.h1}
+        css={style.h1({ isDarkMode: darkMode })}
       >{main.title.download}</h1>
       <GenForm
         buttonText={main.form.download.button.download}
         onSubmit={handleSubmit}
       >
         <label
-          css={formStyle.label}
+          css={formStyle.label({ isDarkMode: darkMode })}
         >{main.form.download.label.urlInput}</label>
         <GenButton
           text={main.form.download.button.paste}
@@ -57,7 +61,7 @@ export const Download = () => {
           isSubmit={false}
         />
         <input
-          css={formStyle.input}
+          css={formStyle.input({ isDarkMode: darkMode })}
           type="text"
           placeholder={main.form.download.input.urlInputPlaceholder}
           required={true}
@@ -65,7 +69,7 @@ export const Download = () => {
           onChange={(e) => setUrl(e.target.value)}
         />
         <label
-          css={formStyle.label}
+          css={formStyle.label({ isDarkMode: darkMode })}
         >{main.form.download.label.saveDir}</label>
         <GenButton
           text={main.form.download.button.selectDir}
@@ -73,7 +77,7 @@ export const Download = () => {
           onClick={handleSelectDir}
         />
         <input
-          css={formStyle.input}
+          css={formStyle.input({ isDarkMode: darkMode })}
           type="text"
           readOnly={true}
           required={true}

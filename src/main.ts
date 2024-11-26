@@ -1,11 +1,57 @@
 import path, { dirname } from "node:path";
 import { BrowserWindow, app, clipboard, dialog, ipcMain } from "electron";
-import { exec, spawn } from "child_process";
+import { spawn } from "child_process";
 import fs from "fs";
 import fetch from "node-fetch";
 import albumArt from "album-art";
 import NodeID3 from "node-id3";
+import Store, { Schema } from "electron-store";
 import { ISubmitDownload, TSelectDirectory } from "./types/window.global";
+
+type TSettingsType = {
+  settings: {
+    language: "enUS" | "jaJP";
+    isDarkMode: boolean;
+    downloadOptions: {
+      audioFormat: "mp3" | "m4a" | "wav";
+      audioQuality: "128K" | "192K" | "256K" | "320K";
+    }
+  }
+}
+
+const schema: Schema<TSettingsType> = {
+  settings: {
+    type: "object",
+    properties: {
+      language: {
+        type: "string",
+        enum: ["enUS", "jaJP"],
+        default: "enUS",
+      },
+      isDaekMode: {
+        type: "boolean",
+        default: false,
+      },
+      downloadOptions: {
+        type: "object",
+        properties: {
+          audioFormat: {
+            type: "string",
+            enum: ["mp3", "m4a", "wav"],
+            default: "mp3",
+          },
+          audioQuality: {
+            type: "string",
+            enum: ["128K", "192K", "256K", "320K"],
+            default: "320K",
+          },
+        },
+      },
+    },
+  },
+}
+
+const settings = new Store({ schema });
 
 app.whenReady().then(() => {
   const mainWindow = new BrowserWindow({
@@ -15,7 +61,15 @@ app.whenReady().then(() => {
   });
 
   mainWindow.loadFile("dist/index.html");
-  // mainWindow.webContents.openDevTools({ mode: "detach" });
+  mainWindow.webContents.openDevTools({ mode: "detach" });
+
+  ipcMain.handle("load-config", async () => {
+    const settingsValue = settings.get("settings");
+  });
+});
+
+ipcMain.on("set-config", (event, values) => {
+  settings.set("settings", values);
 });
 
 ipcMain.handle("paste-from-clipboard", async () => {
@@ -29,6 +83,7 @@ ipcMain.handle("submit-download", async (event, values: ISubmitDownload) => {
   const downloadPrompts = [
     `"${ytDlpPath}"`,
     "--verbose",
+    "--progress",
     `${isPlaylist}`,
     `--output "${output}"`,
     "--windows-filenames",
