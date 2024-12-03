@@ -15,7 +15,8 @@
         "button": {
           "paste": "URLを貼り付ける",
           "selectDir": "ディレクトリを選択",
-          "download": "ダウンロード"
+          "download": "ダウンロード",
+          "downloading": "ダウンロード中..."
         },
         "input": {
           "urlInputPlaceholder": "https://youtu.be, https://music.youtube.com"
@@ -52,6 +53,33 @@
       "download": "音楽をダウンロード",
       "addCover": "アートワークを追加",
       "settings": "設定"
+    }
+  },
+  "alert": {
+    "error": {
+      "title": {
+        "ytdlp_not_found": "エラー: ytdlpが見つかりません"
+      },
+      "message": {
+        "ytdlp_not_found": "設定で指定された場所にytdlpが存在しません。\nこのアプリケーションを使用するためには、ytdlpをダウンロードして設定でその場所を指定してください。"
+      }
+    }
+  },
+  "firstSetting": {
+    "title": {
+      "welcome": " MuDo🤫 へようこそ！"
+    },
+    "message": {
+      "welcome": "このアプリケーションを使用するためには、最初にいくつかの設定を行う必要があります。",
+      "ytdlp_download": "ytdlpをダウンロードするか、既存のytdlpが配置されている場所を指定してください。",
+      "ytdlp_download_success": "ytdlpのダウンロードに成功しました。",
+      "ytdlp_download_fail": "既にytdlpが存在しているか、ダウンロードに失敗しました。"
+    },
+    "button": {
+      "download": "ダウンロード",
+      "downloading": "ダウンロード中...",
+      "set_path": "パスを設定",
+      "done": "設定完了!!"
     }
   }
 }

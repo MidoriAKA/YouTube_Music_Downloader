@@ -1,18 +1,19 @@
 import * as style from "@styles/genericComponents/genButton";
-import { useDarkModeContext } from "@/web/context/darkMode";
+import { useSettingsContext } from "@/web/context/settings";
 
 export const GenButton = (props: IGenButtonProps) => {
 
-  const { text, isSubmit, onClick } = props;
+  const { text, isSubmit, onClick, isDisabled } = props;
   const {
-    darkMode,
-  } = useDarkModeContext();
+    isDarkmode: darkMode,
+  } = useSettingsContext();
 
   return (
     <button
       css={style.genButton({ isDarkMode: darkMode })}
       type={isSubmit ? "submit" : "button"}
       onClick={onClick ? onClick : () => { }}
+      disabled={isDisabled}
     >
       {text}
     </button>

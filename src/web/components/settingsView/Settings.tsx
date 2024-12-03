@@ -1,39 +1,45 @@
-
-import { useLangContext } from "@/web/context/lang/langContext";
-import { useDarkModeContext } from "@/web/context/darkMode";
+import { useSettingsContext } from "@/web/context/settings";
 import * as color from "@styles/root";
 import * as style from "@styles/settingsView/settingsView";
 import * as inputStyle from "@styles/inputStyles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { css, SerializedStyles } from "@emotion/react";
+import { TLangType, TAudioFormat, TAudioQuality } from "@/types/window.global";
+import { GenButton } from "@generic/GenButton";
 
-export const Settings = () => {
-  type TLanguage = "enUS" | "jaJP";
+interface ISettingsProps {
+  isFromFirstSetting: boolean;
+}
 
-  const [sliderValue, setSliderValue] = useState(320);
-  const [sliderValuePercentage, setSliderValuePercentage] = useState(100);
-
-  type TAudioFormat = "mp3" | "m4a" | "wav";
-  const [audioFormat, setAudioFormat] = useState<TAudioFormat>("mp3");
+export const Settings = ({ isFromFirstSetting }: ISettingsProps) => {
 
   const {
     text: { main },
-    setLang,
     lang,
-  } = useLangContext();
-  const {
-    darkMode,
-    setDarkMode,
-  } = useDarkModeContext();
+    setLang,
+    isDarkmode: darkMode,
+    setIsDarkmode: setDarkMode,
+    audioFormat,
+    setAudioFormat,
+    audioQuality,
+    setAudioQuality,
+    handleSaveSettings
+  } = useSettingsContext();
+
+  useEffect(() => {
+    setSliderValuePercentage(((audioQuality - 128) / (320 - 128)) * 100);
+  }, [])
+
+  const [sliderValuePercentage, setSliderValuePercentage] = useState<number>();
 
   const handleLanguage = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    console.dir(e)
-    console.log(e.target.value)
-    setLang(e.target.value as TLanguage);
+    setLang(e.target.value as TLangType);
+    console.log(e.target.value);
   }
 
   const handleDarkMode = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDarkMode(e.target.checked);
+    console.log(e.target.checked);
   }
 
   const SliderBackground: SerializedStyles = css({
@@ -48,12 +54,14 @@ export const Settings = () => {
       !important`,
   })
   const handleSlider = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSliderValue(Number(e.target.value));
+    setAudioQuality(Number(e.target.value) as TAudioQuality);
     setSliderValuePercentage(((Number(e.target.value) - 128) / (320 - 128)) * 100);
+    console.log(e.target.value);
   }
 
   const handleAudioFormat = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setAudioFormat(e.target.value as TAudioFormat);
+
   }
 
   return (
@@ -61,14 +69,24 @@ export const Settings = () => {
       <div
         css={style.container}
       >
-        <h1>{main.title.settings}</h1>
+        {
+          isFromFirstSetting ? (
+            null
+          ) : (
+            <h1
+              css={style.title({ isDarkMode: darkMode })}
+            >{main.title.settings}</h1>
+          )
+        }
         <div
           css={style.section}
         >
           <div
             css={style.options}
           >
-            <label>{main.form.settings.label.language}</label>
+            <label
+              css={style.label({ isDarkMode: darkMode })}
+            >{main.form.settings.label.language}</label>
             <select
               css={inputStyle.Select({ isDarkMode: darkMode })}
               value={lang}
@@ -88,7 +106,9 @@ export const Settings = () => {
           <div
             css={style.options}
           >
-            <label>{main.form.settings.label.theme}</label>
+            <label
+              css={style.label({ isDarkMode: darkMode })}
+            >{main.form.settings.label.theme}</label>
             <input
               css={inputStyle.CheckBox({ isDarkMode: darkMode })}
               type="checkbox"
@@ -100,11 +120,21 @@ export const Settings = () => {
         <div
           css={style.section}
         >
-          <h2>{main.title.downloadOption}</h2>
+          {
+            isFromFirstSetting ? (
+              null
+            ) : (
+              <h2
+                css={style.title({ isDarkMode: darkMode })}
+              >{main.title.downloadOption}</h2>
+            )
+          }
           <div
             css={style.options({ isDarkMode: darkMode })}
           >
-            <label>{main.form.settings.label.audioQuality}</label>
+            <label
+              css={style.label({ isDarkMode: darkMode })}
+            >{main.form.settings.label.audioQuality}</label>
             <div
               className="slider"
             >
@@ -114,18 +144,23 @@ export const Settings = () => {
                 min="128"
                 max="320"
                 step="64"
-                defaultValue="320"
+                defaultValue={audioQuality}
                 onChange={(e) => handleSlider(e)}
               />
-              <p>{sliderValue} kbps</p>
+              <p
+                css={style.label({ isDarkMode: darkMode })}
+              >{audioQuality} kbps</p>
             </div>
           </div>
           <div
             css={style.options}
           >
-            <label>{main.form.settings.label.audioFormat}</label>
+            <label
+              css={style.label({ isDarkMode: darkMode })}
+            >{main.form.settings.label.audioFormat}</label>
             <select
-              css={inputStyle.Select}
+              css={inputStyle.Select({ isDarkMode: darkMode })}
+              value={audioFormat}
               onChange={(e) => handleAudioFormat(e)}
             >
               <option value="mp3">mp3</option>
@@ -134,6 +169,10 @@ export const Settings = () => {
             </select>
           </div>
         </div>
+        <GenButton
+          onClick={handleSaveSettings}
+          text={"save"}
+        />
       </div>
     </>
   );

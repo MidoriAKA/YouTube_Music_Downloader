@@ -27,7 +27,13 @@ export const CheckBox = (props: IInputStylesProps): SerializedStyles => css({
 export const Select = (props: IInputStylesProps): SerializedStyles => css({
   padding: "10px",
   width: "100px",
+  backgroundColor: props.isDarkMode ? theme.Colors.dark : theme.Colors.light,
+  color: props.isDarkMode ? theme.Colors.light : theme.Colors.dark,
   border: props.isDarkMode ? `solid rgba(${theme.Colors.secondary.base}, 0.2)` : `solid rgba(${theme.Colors.primary.base}, 0.2)`,
   borderWidth: "0 0 2px 0",
+  "& > option": {
+    backgroundColor: props.isDarkMode ? theme.Colors.dark : theme.Colors.light,
+    color: props.isDarkMode ? theme.Colors.light : theme.Colors.dark,
+  },
 });
 

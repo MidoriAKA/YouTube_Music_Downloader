@@ -5,17 +5,14 @@ import { IconDownload } from "@/web/assets/download.svg";
 import { IconAddCover } from "@/web/assets/addCover.svg";
 import { IconSettings } from "@/web/assets/settings.svg";
 import { useSideMenuContext } from "@/web/context/sideMenu/sideMenuContext";
-import { useDarkModeContext } from "@/web/context/darkMode";
+import { useSettingsContext } from "@/web/context/settings";
 import { GenToolTip } from "../../genericComponents/GenToolTip";
-import { useLangContext } from "@/web/context/lang/langContext";
 
 export const SideMenu = () => {
   const {
     text: { side },
-  } = useLangContext();
-  const {
-    darkMode,
-  } = useDarkModeContext();
+    isDarkmode: darkMode,
+  } = useSettingsContext();
 
   type THandleToolTip = ["Download" | "Add Cover" | "Settings", boolean];
   const [handleToolTip, setHandleToolTip] = useState<THandleToolTip>([

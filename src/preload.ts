@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer } from "electron";
-import { ISubmitDownload } from "./types/window.global";
+import { ISubmitDownload, TSettingsValues } from "./types/window.global";
 
 contextBridge.exposeInMainWorld("electron", {
   pasteFromClipboard: () =>
@@ -16,9 +16,13 @@ contextBridge.exposeInMainWorld("electron", {
   onReceiveLog: (callback: (log: string) => void) => 
     ipcRenderer.on("receive-log", (event, log) => callback(log)),
 
-  onLoadConfig: (callback: (configValues: any) => void) =>
-    ipcRenderer.on("load-config", (event, configValues) => callback(configValues),
-  ),
-  setConfig: (configValues: any) =>
-    ipcRenderer.send("set-config", configValues),
+  loadSettings: () =>
+    ipcRenderer.invoke("load-settings"),
+  saveSettings: (settingsValues: TSettingsValues) =>
+    ipcRenderer.send("save-settings", settingsValues),
+
+  ytdlpDownload: () => 
+    ipcRenderer.invoke("yt-dlp-download", (event)),
+  ytdlpSetPath: (path: string) =>
+    ipcRenderer.invoke("yt-dlp-set-path", path),
 });

@@ -4,30 +4,31 @@ import { GenForm } from "@generic/GenForm";
 import { GenButton } from "@generic/GenButton";
 import { useState } from "react";
 import { TSelectDirectory } from "@/types/window.global";
-import { useLangContext } from "@/web/context/lang/langContext";
-import { useDarkModeContext } from "@/web/context/darkMode";
+import { useSettingsContext } from "@/web/context/settings";
 
 export const Download = () => {
   const {
-    text: { main },
-  } = useLangContext();
-  const {
-    darkMode
-  } = useDarkModeContext();
+    text: { main, alert },
+    isDarkmode: darkMode,
+  } = useSettingsContext();
   const [url, setUrl] = useState<string>("");
   const [saveDir, setSaveDir] = useState<string>("");
+  const [downloadButtonText, setDownloadButtonText] = useState<string>(main.form.download.button.download);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    setDownloadButtonText(main.form.download.button.downloading);
     e.preventDefault();
     try {
       const value = {
         url,
         saveDir,
       }
-      const result = await window.electron.submitDownload(value);
-      alert(result);
-    } catch (error) {
-      console.error(error);
+      const result = await window.electron.submitDownload(value)
+      window.alert(result);
+      setDownloadButtonText(main.form.download.button.download);
+    } catch (error: any) {
+      window.alert(error);
+      setDownloadButtonText(main.form.download.button.download);
     }
   };
 
@@ -49,8 +50,9 @@ export const Download = () => {
         css={style.h1({ isDarkMode: darkMode })}
       >{main.title.download}</h1>
       <GenForm
-        buttonText={main.form.download.button.download}
+        buttonText={downloadButtonText}
         onSubmit={handleSubmit}
+        isDisabled={downloadButtonText === main.form.download.button.downloading}
       >
         <label
           css={formStyle.label({ isDarkMode: darkMode })}

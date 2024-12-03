@@ -26,6 +26,16 @@ export const section: SerializedStyles = css({
   },
 });
 
+export const title = (props: ISettingsProps): SerializedStyles => css({
+  color: props.isDarkMode ? theme.Colors.light : theme.Colors.dark,
+  fontSize: "1.5rem",
+});
+
+export const label = (props: ISettingsProps): SerializedStyles => css({
+  color: props.isDarkMode ? theme.Colors.light : theme.Colors.dark,
+  fontSize: "1.2rem",
+});
+
 export const options = (props: ISettingsProps): SerializedStyles => css({
   display: "flex",
   justifyContent: "space-between",

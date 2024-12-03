@@ -4,12 +4,34 @@ export interface IElectronAPI {
   selectDirectory: () => Promise<TSelectDirectory>;
   submitAddCover: (path: string) => Promise<void>;
   onReceiveLog: (callback: (log: string) => void) => void;
+
+  loadSettings: () => Promise<TSettingsValues>;
+  saveSettings: (settingsValues: TSettingsValues) => void;
+
+  ytdlpDownload: () => Promise<void>;
+  ytdlpSetPath: (path: string) => Promise<void>;
 }
 interface ISubmitDownload {
   url: string;
   saveDir: string;
 }
 type TSelectDirectory = [string, string[] | []];
+type TLangType = "enUS" | "jaJP" | "ptBR";
+type TAudioQuality = 128 | 192 | 256 | 320;
+type TAudioFormat = "mp3" | "m4a" | "wav";
+export type TSettingsValues = {
+  settings: {
+    [x: string]: any;
+    isFirstTime: boolean;
+    language: TLangType;
+    isDarkMode: boolean;
+    ytdlpPath: string;
+    downloadOptions: {
+      audioQuality: TAudioQuality;
+      audioFormat: TAudioFormat;
+    }
+  }
+}
 
 declare global {
   interface Window {

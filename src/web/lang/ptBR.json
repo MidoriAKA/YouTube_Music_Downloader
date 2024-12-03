@@ -15,7 +15,8 @@
         "button": {
           "paste": "Colar URL",
           "selectDir": "Selecionar Localização",
-          "download": "Baixar"
+          "download": "Baixar",
+          "downloading": "Baixando..."
         },
         "input": {
           "urlInputPlaceholder": "https://youtu.be, https://music.youtube.com"
@@ -52,6 +53,33 @@
       "download": "Baixar Música",
       "addCover": "Adicionar Capa",
       "settings": "Configurações"
+    }
+  },
+  "alert": {
+    "error": {
+      "title": {
+        "ytdlp_not_found": "Erro: ytdlp não encontrado"
+      },
+      "message": {
+        "ytdlp_not_found": "ytdlp não foi encontrado no local especificado nas configurações.\nPor favor, baixe ytdlp e especifique o local nas configurações para usar este aplicativo."
+      }
+    }
+  },
+  "firstSetting": {
+    "title": {
+      "welcome": "Bem-vindo ao MuDo🤫!"
+    },
+    "message": {
+      "welcome": "Para usar este aplicativo, você precisa fazer algumas configurações iniciais.",
+      "ytdlp_download": "Baixe o ytdlp ou especifique o local onde o ytdlp existente está localizado.",
+      "ytdlp_download_success": "ytdlp baixado com sucesso.",
+      "ytdlp_download_fail": "ytdlp já existe ou falha ao baixar."
+    },
+    "button": {
+      "download": "Baixar ytdlp",
+      "downloading": "Baixando...",
+      "set_path": "Definir Localização",
+      "done": "Pronto!!"
     }
   }
 }

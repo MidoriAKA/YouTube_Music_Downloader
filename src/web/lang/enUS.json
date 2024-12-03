@@ -15,7 +15,8 @@
         "button": {
           "paste": "Paste URL",
           "selectDir": "Select Directory",
-          "download": "Download"
+          "download": "Download",
+          "downloading": "Downloading..."
         },
         "input": {
           "urlInputPlaceholder": "https://youtu.be, https://music.youtube.com"
@@ -52,6 +53,33 @@
       "download": "Download Music",
       "addCover": "Add Cover to Music Files",
       "settings": "Settings"
+    }
+  },
+  "alert": {
+    "error": {
+      "title": {
+        "ytdlp_not_found": "Error: ytdlp not found"
+      },
+      "message": {
+        "ytdlp_not_found": "ytdlp does not exist at the location specified in the configuration.\nPlease check the settings and make sure the path is correct."
+      }
+    }
+  },
+  "firstSetting": {
+    "title": {
+      "welcome": "Welcome to MuDo🤫!"
+    },
+    "message": {
+      "welcome": "Before you start, please set the following options.",
+      "ytdlp_download": "Direct download yt-dlp, or specify the path to the existing yt-dlp.",
+      "ytdlp_download_success": "yt-dlp has been successfully downloaded.",
+      "ytdlp_download_fail": "yt-dlp already exists or download failed."
+    },
+    "button": {
+      "download": "Direct Download",
+      "downloading": "Downloading...",
+      "set_path": "Set path Manually",
+      "done": "Done!!"
     }
   }
 }

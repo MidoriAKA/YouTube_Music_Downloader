@@ -2,16 +2,13 @@ import * as style from "@styles/App";
 import * as formStyle from "@styles/genericComponents/genForm";
 import { GenForm } from "@generic/GenForm";
 import { GenButton } from "@generic/GenButton";
-import { useLangContext } from "@/web/context/lang/langContext";
-import { useDarkModeContext } from "@/web/context/darkMode";
+import { useSettingsContext } from "@/web/context/settings";
 
 export const AddCover = () => {
   const {
     text: { main },
-  } = useLangContext();
-  const {
-    darkMode,
-  } = useDarkModeContext();
+    isDarkmode: darkMode,
+  } = useSettingsContext();
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Form submitted");

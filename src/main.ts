@@ -1,36 +1,34 @@
 import path, { dirname } from "node:path";
-import { BrowserWindow, app, clipboard, dialog, ipcMain } from "electron";
+import { BrowserWindow, app, clipboard, dialog, ipcMain, webContents } from "electron";
 import { spawn } from "child_process";
 import fs from "fs";
 import fetch from "node-fetch";
 import albumArt from "album-art";
 import NodeID3 from "node-id3";
 import Store, { Schema } from "electron-store";
-import { ISubmitDownload, TSelectDirectory } from "./types/window.global";
+import iconv from "iconv-lite";
+import { ISubmitDownload, TSelectDirectory, TSettingsValues } from "./types/window.global";
 
-type TSettingsType = {
-  settings: {
-    language: "enUS" | "jaJP";
-    isDarkMode: boolean;
-    downloadOptions: {
-      audioFormat: "mp3" | "m4a" | "wav";
-      audioQuality: "128K" | "192K" | "256K" | "320K";
-    }
-  }
-}
-
-const schema: Schema<TSettingsType> = {
+const schema: Schema<TSettingsValues> = {
   settings: {
     type: "object",
     properties: {
+      isFirstTime: {
+        type: "boolean",
+        default: true,
+      },
       language: {
         type: "string",
-        enum: ["enUS", "jaJP"],
+        enum: ["enUS", "jaJP", "ptBR"],
         default: "enUS",
       },
-      isDaekMode: {
+      isDarkMode: {
         type: "boolean",
         default: false,
+      },
+      ytdlpPath: {
+        type: "string",
+        default: "",
       },
       downloadOptions: {
         type: "object",
@@ -41,9 +39,9 @@ const schema: Schema<TSettingsType> = {
             default: "mp3",
           },
           audioQuality: {
-            type: "string",
-            enum: ["128K", "192K", "256K", "320K"],
-            default: "320K",
+            type: "number",
+            enum: [128, 192, 256, 320],
+            default: 320,
           },
         },
       },
@@ -52,6 +50,22 @@ const schema: Schema<TSettingsType> = {
 }
 
 const settings = new Store({ schema });
+if (settings.get("settings") === undefined) {
+  console.log("Settings not found. Creating default settings...");
+  const def:TSettingsValues  = {
+    settings: {
+      isFirstTime: true,
+      language: "enUS",
+      isDarkMode: false,
+      ytdlpPath: "",
+      downloadOptions: {
+        audioQuality: 320,
+        audioFormat: "mp3",
+      },
+    },
+  };
+  settings.set("settings", def);
+}
 
 app.whenReady().then(() => {
   const mainWindow = new BrowserWindow({
@@ -59,17 +73,57 @@ app.whenReady().then(() => {
       preload: path.resolve(__dirname, "preload.js"),
     },
   });
-
+  mainWindow.setMenuBarVisibility(false);
   mainWindow.loadFile("dist/index.html");
   mainWindow.webContents.openDevTools({ mode: "detach" });
 
-  ipcMain.handle("load-config", async () => {
-    const settingsValue = settings.get("settings");
+  const appDataPath = app.getPath("appData"); // C:\Users\username\AppData\Roaming 
+  console.log("AppData Path:", appDataPath); // to set ytdlpPath when user download on first setting
+
+  ipcMain.handle("load-settings", async () => {
+    const settingsValues = settings.get("settings");
+    console.dir(settingsValues);
+    return settingsValues;
   });
 });
 
-ipcMain.on("set-config", (event, values) => {
+ipcMain.handle("get-app-data-path", async () => {
+  const appDataPath = path.join(app.getPath("appData"), "mudo");
+  return appDataPath;
+});
+
+ipcMain.on("save-settings", (event, values) => {
   settings.set("settings", values);
+  console.dir(values);
+});
+
+ipcMain.handle("yt-dlp-download", async (event) => {
+  const appDataPath = app.getPath("appData");
+
+  event.sender.send("receive-log", "installing yt-dlp...");
+  const winget = "winget install yt-dlp";
+  const cmdProcess = spawn(winget, {
+    shell: true,
+    cwd: appDataPath,
+  });
+  cmdProcess.stdin.write("y\n");
+  cmdProcess.stdin.end();
+  cmdProcess.stdout.on("data", (data) => {
+    event.sender.send("receive-log", data.toString());
+  });
+  cmdProcess.on("close", (code) => {
+    if (code === 0) {
+      event.sender.send("receive-log", "success");
+    } else {
+      event.sender.send("receive-log", "falied");
+    }
+  });
+});
+
+ipcMain.handle("yt-dlp-set-path", (event, path) => {
+  const settingsValues = settings.get("settings");
+  settingsValues.ytdlpPath = path;
+  settings.set("settings", settingsValues);
 });
 
 ipcMain.handle("paste-from-clipboard", async () => {
@@ -77,11 +131,17 @@ ipcMain.handle("paste-from-clipboard", async () => {
 });
 
 ipcMain.handle("submit-download", async (event, values: ISubmitDownload) => {
-  const ytDlpPath = path.join(__dirname, "bin", "yt-dlp.exe");
+  const settingsValues = settings.get("settings");
+  console.dir(settingsValues);
+  const downloadOptions = settingsValues.settings.downloadOptions;
+  const ytdlpPrompt = settingsValues.settings.ytdlpPath 
+    ? `"${settingsValues.settings.ytdlpPath}"`
+    : "yt-dlp";
+
   const isPlaylist = values.url.includes("playlist") ? "--yes-playlist" : "";
   const output = path.join(values.saveDir, "%(artist)s - %(title)s.%(ext)s");
   const downloadPrompts = [
-    `"${ytDlpPath}"`,
+    `${ytdlpPrompt}`,
     "--verbose",
     "--progress",
     `${isPlaylist}`,
@@ -90,13 +150,11 @@ ipcMain.handle("submit-download", async (event, values: ISubmitDownload) => {
     "--abort-on-unavailable-fragment",
     "--buffer-size 1M",
     "--extract-audio",
-    "--audio-format mp3",
-    "--audio-quality 320K",
+    `--audio-format ${downloadOptions.audioFormat}`,
+    `--audio-quality ${downloadOptions.audioQuality}K`,
     "--embed-metadata",
     `"${values.url}"`,
   ].join(" ");
-
-  console.log(downloadPrompts);
 
   return new Promise((resolve, reject) => {
     const cmdProcess = spawn(downloadPrompts, {
@@ -121,11 +179,11 @@ ipcMain.handle("submit-download", async (event, values: ISubmitDownload) => {
 });
 
 ipcMain.handle("submit-add-cover", async (event, path: string) => {
-  const mp3Files = fs.readdirSync(path).filter((file) => file.endsWith(".mp3"))
+  const audioFiles = fs.readdirSync(path).filter((file) => file.endsWith(".mp3"))
   ? fs.readdirSync(path).filter((file) => file.endsWith(".mp3"))
   : [];
 
-  mp3Files.forEach(async (path) => {
+  audioFiles.forEach(async (path) => {
     await setCover(path);
   });
 });
@@ -185,13 +243,19 @@ ipcMain.handle("select-directory", async () => {
   }
 
   const directlyPath = result.filePaths[0];
-  const mp3Files = fs.readdirSync(directlyPath).filter((file) => file.endsWith(".mp3"))
-  ? fs.readdirSync(directlyPath).filter((file) => file.endsWith(".mp3"))
+  const audioFiles = fs.readdirSync(directlyPath).filter((file) =>
+    file.endsWith(".mp3")
+    || file.endsWith(".m4a")
+    || file.endsWith(".wav"))
+      ? fs.readdirSync(directlyPath).filter((file) =>
+        file.endsWith(".mp3")
+        || file.endsWith(".m4a")
+        || file.endsWith(".wav"))
   : [];
 
   const returnValues: TSelectDirectory = [
     directlyPath,
-    mp3Files,
+    audioFiles,
   ]
 
   return returnValues;
