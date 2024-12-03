@@ -5,6 +5,7 @@ import { GenButton } from "@generic/GenButton";
 import { useState } from "react";
 import { TSelectDirectory } from "@/types/window.global";
 import { useSettingsContext } from "@/web/context/settings";
+import { LogView } from "../../absolute/logView";
 
 export const Download = () => {
   const {
@@ -14,11 +15,13 @@ export const Download = () => {
   const [url, setUrl] = useState<string>("");
   const [saveDir, setSaveDir] = useState<string>("");
   const [downloadButtonText, setDownloadButtonText] = useState<string>(main.form.download.button.download);
+  const [isWorking, setIsWorking] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     setDownloadButtonText(main.form.download.button.downloading);
     e.preventDefault();
     try {
+      setIsWorking(true);
       const value = {
         url,
         saveDir,
@@ -26,9 +29,11 @@ export const Download = () => {
       const result = await window.electron.submitDownload(value)
       window.alert(result);
       setDownloadButtonText(main.form.download.button.download);
+      setIsWorking(false);
     } catch (error: any) {
       window.alert(error);
       setDownloadButtonText(main.form.download.button.download);
+      setIsWorking(false);
     }
   };
 
@@ -46,6 +51,7 @@ export const Download = () => {
   }
   return (
     <>
+      <LogView active={isWorking} isWorking={isWorking} />
       <h1
         css={style.h1({ isDarkMode: darkMode })}
       >{main.title.download}</h1>

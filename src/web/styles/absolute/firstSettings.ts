@@ -1,11 +1,11 @@
 import { css, SerializedStyles } from "@emotion/react";
 import * as theme from "@styles/root";
 
-interface IYtdlpNotFoundProps {
+interface IFirstSettingsProps {
   isDarkmode?: boolean;
 }
 
-export const container = (props: IYtdlpNotFoundProps): SerializedStyles => css({
+export const container = (props: IFirstSettingsProps): SerializedStyles => css({
   position: "absolute",
   left: "50%",
   top: "50%",

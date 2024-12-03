@@ -4,7 +4,7 @@ import { GenForm } from "@generic/GenForm";
 import { useEffect, useState } from "react";
 
 import * as background from "@styles/absolute/fullScreen"
-import * as style from "@styles/absolute/ytdlpNotFound"
+import * as style from "@/web/styles/absolute/firstSettings"
 import * as rootStyle from "@styles/App"
 import * as inputStyle from "@styles/genericComponents/genForm"
 import { useSettingsContext } from "@/web/context/settings";
