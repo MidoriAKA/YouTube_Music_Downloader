@@ -8,7 +8,7 @@ This project is a modified version of the “Downloader in 3 hours” that I cre
 
 ### Installation
 
-- Please click here to download the file.
+- Please [click here](https://github.com/MidoriAKA/YouTube_Music_Downloader/releases/download/24.12.04.1/MuDo-win32-x64.zip) to download the file.
 - Unzip everything into any folder and run “MuDo.exe
 - Have fun :D
 
