@@ -3,6 +3,7 @@
     "title": {
       "download": "Baixar Música",
       "cover": "Adicionar Capa em Música",
+      "cover_unavailable": "Serviço Indisponível",
       "settings": "Configurações",
       "downloadOption": "Opção de Download"
     },
@@ -23,6 +24,7 @@
         }
       },
       "cover": {
+        "Unavailable": "Este recurso está atualmente indisponível. Por favor, use estas alternativas",
         "label": {
           "selectDir": "Adicionar capas em todas as músicas sob a localização selecionada."
         },
@@ -67,7 +69,7 @@
   },
   "firstSetting": {
     "title": {
-      "welcome": "Bem-vindo ao MuDo🤫!"
+      "welcome": "Bem-vindo ao MuDo🤐!"
     },
     "message": {
       "welcome": "Para usar este aplicativo, você precisa fazer algumas configurações iniciais.",

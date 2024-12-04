@@ -10,6 +10,7 @@ export const GenButton = (props: IGenButtonProps) => {
 
   return (
     <button
+      style={props.style}
       css={style.genButton({ isDarkMode: darkMode })}
       type={isSubmit ? "submit" : "button"}
       onClick={onClick ? onClick : () => { }}

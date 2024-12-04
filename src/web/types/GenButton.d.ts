@@ -3,4 +3,5 @@ interface IGenButtonProps {
   isSubmit?: boolean;
   onClick?: () => void;
   isDisabled?: boolean;
+  style?: React.CSSProperties;
 }

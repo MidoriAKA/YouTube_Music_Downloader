@@ -3,6 +3,7 @@
     "title": {
       "download": "ダウンロード",
       "cover": "音楽ファイルにアートワークを追加",
+      "cover_unavailable": "サービスが利用できません",
       "settings": "設定",
       "downloadOption": "ダウンロードオプション"
     },
@@ -23,6 +24,7 @@
         }
       },
       "cover": {
+        "Unavailable": "この機能は現在利用できません。代わりにこれらの代替手段を使用してください",
         "label": {
           "selectDir": "選択したディレクトリ内のすべての音楽ファイルにアートワークを追加します。"
         },
@@ -67,7 +69,7 @@
   },
   "firstSetting": {
     "title": {
-      "welcome": " MuDo🤫 へようこそ！"
+      "welcome": " MuDo🤐 へようこそ！"
     },
     "message": {
       "welcome": "このアプリケーションを使用するためには、最初にいくつかの設定を行う必要があります。",

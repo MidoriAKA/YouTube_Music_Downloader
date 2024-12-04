@@ -3,6 +3,7 @@
     "title": {
       "download": "Download Music",
       "cover": "Add Cover to Music Files",
+      "cover_unavailable": "Service Unavailable",
       "settings": "Settings",
       "downloadOption": "Download Option"
     },
@@ -23,6 +24,7 @@
         }
       },
       "cover": {
+        "Unavailable": "This feature is currently unavailable. Please use these alternatives instead",
         "label": {
           "selectDir": "Works on all music under the selected directory."
         },
@@ -67,7 +69,7 @@
   },
   "firstSetting": {
     "title": {
-      "welcome": "Welcome to MuDo🤫!"
+      "welcome": "Welcome to MuDo🤐!"
     },
     "message": {
       "welcome": "Before you start, please set the following options.",

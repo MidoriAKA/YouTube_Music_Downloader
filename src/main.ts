@@ -3,10 +3,8 @@ import { BrowserWindow, app, clipboard, dialog, ipcMain, webContents } from "ele
 import { spawn } from "child_process";
 import fs from "fs";
 import fetch from "node-fetch";
-import albumArt from "album-art";
 import NodeID3 from "node-id3";
 import Store, { Schema } from "electron-store";
-import iconv from "iconv-lite";
 import { ISubmitDownload, TSelectDirectory, TSettingsValues } from "./types/window.global";
 
 const schema: Schema<TSettingsValues> = {
@@ -75,7 +73,7 @@ app.whenReady().then(() => {
   });
   mainWindow.setMenuBarVisibility(false);
   mainWindow.loadFile("dist/index.html");
-  mainWindow.webContents.openDevTools({ mode: "detach" });
+  // mainWindow.webContents.openDevTools({ mode: "detach" });
 
   const appDataPath = app.getPath("appData"); // C:\Users\username\AppData\Roaming 
   console.log("AppData Path:", appDataPath); // to set ytdlpPath when user download on first setting
@@ -160,6 +158,14 @@ ipcMain.handle("submit-download", async (event, values: ISubmitDownload) => {
     const cmdProcess = spawn(downloadPrompts, {
       shell: true,
     });
+    ipcMain.once("cancel-download", () => {
+      cmdProcess.stdin.end();
+      cmdProcess.stdout.destroy();
+      cmdProcess.stderr.destroy();
+      cmdProcess.kill();
+      cmdProcess.kill("SIGKILL");
+      reject("Download canceled.");
+    });
     cmdProcess.stdout.on("data", (data) => {
       event.sender.send("receive-log", data.toString());
       console.log("\x1b[36m%s\x1b[0m", data.toString());
@@ -178,61 +184,62 @@ ipcMain.handle("submit-download", async (event, values: ISubmitDownload) => {
   });
 });
 
-ipcMain.handle("submit-add-cover", async (event, path: string) => {
-  const audioFiles = fs.readdirSync(path).filter((file) => file.endsWith(".mp3"))
-  ? fs.readdirSync(path).filter((file) => file.endsWith(".mp3"))
-  : [];
+// ipcMain.handle("submit-add-cover", async (event, dirPath: string) => {
+//   const audioFiles = fs.readdirSync(dirPath).filter((file) => file.endsWith(".mp3"))
+//     ? fs.readdirSync(dirPath).filter((file) => file.endsWith(".mp3"))
+//     : [];
 
-  audioFiles.forEach(async (path) => {
-    await setCover(path);
-  });
-});
+//   audioFiles.forEach(async (file) => {
+//     const filePath = path.join(dirPath, file);
+//     setCover(filePath);
+//   });
+// });
 
-const setCover = async (filePath: string) => {
-  try {
-    NodeID3.read(filePath, async (err: string, tags: { album: string; title: string; }) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
+// const setCover = async (filePath: string) => {
+//   try {
+//     NodeID3.read(filePath, async (err: string, tags: { album: string; title: string; }) => {
+//       if (err) {
+//         console.error(err);
+//         return;
+//       }
 
-      const albumName = tags.album
-        ? tags.album
-        : tags.title;
-      const fileName = path.basename(filePath, ".mp3");
-      const [artist, title] = fileName.split(" - ");
+//       const albumName = tags.album
+//         ? tags.album
+//         : tags.title;
+//       const fileName = path.basename(filePath, ".mp3");
+//       const [artist, title] = fileName.split(" - ");
 
-      try {
-        const coverURL = await albumArt(artist, { album: albumName, size: "large" });
-        const coverData = await fetchCover(coverURL);
+//       try {
+//         const coverURL = await albumArt(artist, { album: albumName, size: "large" });
+//         const coverData = await fetchCover(coverURL);
 
-        NodeID3.update({ image: { mime: "image/jpeg", type: { id: 3 }, description: "Cover", imageBuffer: coverData } }, filePath, (err: string) => {
-          if (err) {
-            console.error(err);
-            return;
-          } else {
-            console.log("Cover added successfully.");
-          }
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    });
-  } catch (error) {
-    console.error(error);
-  }
-};
+//         NodeID3.update({ image: { mime: "image/jpeg", type: { id: 3 }, description: "Cover", imageBuffer: coverData } }, filePath, (err: string) => {
+//           if (err) {
+//             console.error(err);
+//             return;
+//           } else {
+//             console.log("Cover added successfully.");
+//           }
+//         });
+//       } catch (error) {
+//         console.error(error);
+//       }
+//     });
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };
 
-const fetchCover = async (url: string) => {
-  const res = await fetch(url);
-  if (!res.ok) {
-    throw new Error("Failed to fetch cover image.");
-  } else {
-    console.log("Cover image fetched successfully.");
-  }
-  const buffer = await res.arrayBuffer();
-  return Buffer.from(buffer);
-};
+// const fetchCover = async (url: string) => {
+//   const res = await fetch(url);
+//   if (!res.ok) {
+//     throw new Error("Failed to fetch cover image.");
+//   } else {
+//     console.log("Cover image fetched successfully.");
+//   }
+//   const buffer = await res.arrayBuffer();
+//   return Buffer.from(buffer);
+// };
 
 ipcMain.handle("select-directory", async () => {
   const result = await dialog.showOpenDialog({
@@ -259,6 +266,39 @@ ipcMain.handle("select-directory", async () => {
   ]
 
   return returnValues;
+});
+
+ipcMain.handle("load-directory", async () => {
+  const directoryHistoryPath = path.join(app.getPath("userData"), "directoryHistory.json");
+  if (!fs.existsSync(dirname(directoryHistoryPath))) {
+    console.log("Directory history not found. Creating new file...");
+    fs.mkdirSync(dirname(directoryHistoryPath), { recursive: true });
+    fs.writeFileSync(directoryHistoryPath, JSON.stringify([]));
+  }
+  try {
+    const data = fs.readFileSync(directoryHistoryPath, "utf-8");
+    return JSON.parse(data);
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+});
+
+ipcMain.handle("save-directory", async (event, savePath) => {
+  const directoryHistoryPath = path.join(app.getPath("userData"), "directoryHistory.json");
+  if (!fs.existsSync(dirname(directoryHistoryPath))) {
+    fs.mkdirSync(dirname(directoryHistoryPath), { recursive: true });
+  }
+  const data = fs.readFileSync(directoryHistoryPath, "utf-8");
+  const directoryHistory = JSON.parse(data);
+  if (directoryHistory.includes(savePath)) {
+    return;
+  }
+  if (directoryHistory.length >= 10) {
+    directoryHistory.shift
+  }
+  directoryHistory.push(savePath);
+  fs.writeFileSync(directoryHistoryPath, JSON.stringify(directoryHistory));
 });
 
 app.once("window-all-closed", () => app.quit());

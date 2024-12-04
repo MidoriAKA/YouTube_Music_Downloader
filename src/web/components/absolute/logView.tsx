@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useSettingsContext } from "@/web/context/settings"
 import * as background from "@styles/absolute/fullScreen"
 import * as style from "@styles/absolute/logView"
+import { GenButton } from "../genericComponents/GenButton";
 
 
 interface ILogViewProps {
@@ -74,6 +75,17 @@ export const LogView = ({ active, isWorking }: ILogViewProps) => {
         style={{ display: active ? "flex" : "none" }}
         css={style.container({ isDarkmode: isDarkmode })}
       >
+        <GenButton
+          style={{
+            position: "absolute",
+            top: "10px",
+            right: "10px",
+          }}
+          text="cancel"
+          onClick={() => {
+            window.electron.cancelDownload();
+          }}
+        />
         <h1>
           {
             playlistName ? playlistName : "Downloading"

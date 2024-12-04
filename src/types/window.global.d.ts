@@ -1,12 +1,15 @@
 export interface IElectronAPI {
   pasteFromClipboard: () => Promise<string>;
   submitDownload: (values: ISubmitDownload) => Promise<void>;
+  cancelDownload: () => void;
   selectDirectory: () => Promise<TSelectDirectory>;
   submitAddCover: (path: string) => Promise<void>;
   onReceiveLog: (callback: (log: string) => void) => void;
 
   loadSettings: () => Promise<TSettingsValues>;
   saveSettings: (settingsValues: TSettingsValues) => void;
+  loadDirectroy: () => Promise<string[]>;
+  saveDirectory: (path: string) => Promise<void>;
 
   ytdlpDownload: () => Promise<void>;
   ytdlpSetPath: (path: string) => Promise<void>;

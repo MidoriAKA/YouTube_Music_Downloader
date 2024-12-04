@@ -7,6 +7,8 @@ contextBridge.exposeInMainWorld("electron", {
 
   submitDownload: (values: ISubmitDownload) =>
     ipcRenderer.invoke("submit-download", values),
+  cancelDownload: () =>
+    ipcRenderer.send("cancel-download"),
 
   selectDirectory: () =>
     ipcRenderer.invoke("select-directory"),
@@ -20,6 +22,11 @@ contextBridge.exposeInMainWorld("electron", {
     ipcRenderer.invoke("load-settings"),
   saveSettings: (settingsValues: TSettingsValues) =>
     ipcRenderer.send("save-settings", settingsValues),
+
+  loadDirectroy: () =>
+    ipcRenderer.invoke("load-directory"),
+  saveDirectory: (path: string) =>
+    ipcRenderer.invoke("save-directory", path),
 
   ytdlpDownload: () => 
     ipcRenderer.invoke("yt-dlp-download", (event)),

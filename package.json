@@ -1,6 +1,6 @@
 {
   "name": "mudo",
-  "version": "0.0.1",
+  "version": "24.12.04_0.1.1",
   "description": "Youtube Music Downloader redesigned with Electron, React and TypeScript",
   "license": "",
   "author": "Midori",
@@ -9,7 +9,10 @@
     "dev": "rimraf dist && run-p dev:webpack dev:electron",
     "build": "rimraf dist && cross-env NODE_ENV=\"production\" webpack --progress",
     "dev:webpack": "cross-env NODE_ENV=\"development\" webpack --progress",
-    "dev:electron": "wait-on ./dist/index.html ./dist/main.js && electronmon ."
+    "dev:electron": "wait-on ./dist/index.html ./dist/main.js && electronmon .",
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "electronmon": {
     "patterns": [
@@ -21,15 +24,25 @@
     "@emotion/styled": "^11.13.5",
     "ajv": "^8.17.1",
     "album-art": "^3.2.0",
+    "electron-squirrel-startup": "^1.0.1",
     "electron-store": "^8.2.0",
     "ffmpeg-static": "^5.2.0",
     "iconv-lite": "^0.6.3",
+    "isomorphic-fetch": "^3.0.0",
     "node-fetch": "^3.3.2",
     "node-id3": "^0.2.6",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@electron-forge/cli": "^7.6.0",
+    "@electron-forge/maker-deb": "^7.6.0",
+    "@electron-forge/maker-rpm": "^7.6.0",
+    "@electron-forge/maker-squirrel": "^7.6.0",
+    "@electron-forge/maker-zip": "^7.6.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.6.0",
+    "@electron-forge/plugin-fuses": "^7.6.0",
+    "@electron/fuses": "^1.8.0",
     "@types/csp-html-webpack-plugin": "^3.0.5",
     "@types/node": "^22.9.1",
     "@types/react": "^18.3.12",
